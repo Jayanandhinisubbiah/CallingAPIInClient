@@ -44,29 +44,67 @@ namespace CallingAPIInClient.Controllers
         //    return RedirectToAction("ViewCart");
         //}
         [HttpPost]
-        public async Task<IActionResult> AddtoCart(int qnt,int foodId)
+        public async Task<IActionResult> AddtoCart(Cart C)
         {
 
             string UserId = HttpContext.Session.GetString("UserId");
             int b = int.Parse(UserId);
-            Content C = new Content { Qnt = qnt, FoodId = foodId, UserId = b };
+            C.UserId = b;
+            C.Food = null;
+            C.User = null ;
+            Cart cart = new Cart();
 
             using (var httpClient = new HttpClient())
             {
-                //var data = JsonConvert.SerializeObject(objectDataToPost);
-                //StringContent content = new StringContent(data, Encoding.UTF8, "application/json");
 
                 StringContent content1 = new StringContent(JsonConvert.SerializeObject(C), Encoding.UTF8, "application/json");
-                //await httpClient.PostAsync("https://localhost:7172/api/Carts/AddtoCart/", content1);
-                using (var response = await httpClient.PostAsync("https://localhost:7172/api/Carts/AddtoCart/", content1, CancellationToken.None))
+                using (var response = await httpClient.PostAsync("https://localhost:7172/api/Carts/AddtoCart", content1))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    C = JsonConvert.DeserializeObject<Content>(apiResponse);
+                    cart = JsonConvert.DeserializeObject<Cart>(apiResponse);
                 }
             }
             return RedirectToAction("ViewCart");
         }
+        public async Task<IActionResult> ViewCart()
+        {
 
+            string UserId = HttpContext.Session.GetString("UserId");
+            int b = int.Parse(UserId);
+            List<Cart> U=new List<Cart>();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:7172/api/Carts/ViewCart" + b))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    U = JsonConvert.DeserializeObject<List<Cart>>(apiResponse);
+                }
+            }
+            return View(U);
+        }
+        [HttpPost]
+        public async Task<IActionResult> ViewCart(Cart C)
+        {
+
+            string UserId = HttpContext.Session.GetString("UserId");
+            int b = int.Parse(UserId);
+            C.UserId = b;
+            C.Food = null;
+            C.User = null;
+            Cart cart = new Cart();
+
+            using (var httpClient = new HttpClient())
+            {
+
+                StringContent content1 = new StringContent(JsonConvert.SerializeObject(C), Encoding.UTF8, "application/json");
+                using (var response = await httpClient.PostAsync("https://localhost:7172/api/Carts/AddtoCart", content1))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    cart = JsonConvert.DeserializeObject<Cart>(apiResponse);
+                }
+            }
+            return RedirectToAction("ViewCart");
+        }
     }
     }
 
