@@ -11,7 +11,7 @@ namespace CallingAPIInClient.Controllers
     {
         public async Task<IActionResult> AddtoCart(int? FoodId)
         {
-            
+
             string UserId = HttpContext.Session.GetString("UserId");
             Food food = new();
             using (var httpClient = new HttpClient())
@@ -53,7 +53,7 @@ namespace CallingAPIInClient.Controllers
             int b = int.Parse(UserId);
             C.UserId = b;
             C.Food = null;
-            C.User = null ;
+            C.User = null;
             Cart cart = new Cart();
 
             using (var httpClient = new HttpClient())
@@ -73,13 +73,13 @@ namespace CallingAPIInClient.Controllers
 
             string UserId = HttpContext.Session.GetString("UserId");
             int b = int.Parse(UserId);
-            List<Cart> U=new List<Cart>();
+            List<Cart> U = new List<Cart>();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync("https://localhost:7172/api/Carts/ViewCart" + b))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                     U= JsonConvert.DeserializeObject<List<Cart>>(apiResponse);
+                    U = JsonConvert.DeserializeObject<List<Cart>>(apiResponse);
                 }
             }
             return View(U);
@@ -98,7 +98,7 @@ namespace CallingAPIInClient.Controllers
             using (var httpClient = new HttpClient())
             {
 
-                using (var response = await httpClient.GetAsync("https://localhost:7172/api/Carts/"+b))
+                using (var response = await httpClient.GetAsync("https://localhost:7172/api/Carts/" + b))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     cart = JsonConvert.DeserializeObject<Cart>(apiResponse);
@@ -150,10 +150,56 @@ namespace CallingAPIInClient.Controllers
 
                 }
                 //returning the product list to view  
-                return View(OrderInfo);
+                return RedirectToAction("Buy");
+            }
+        }
+        [HttpGet]
+        public async Task<IActionResult> Buy()
+        {
+            string UserId = HttpContext.Session.GetString("UserId");
+            int b = int.Parse(UserId);
+            OrderMaster ?om = new OrderMaster();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:7172/api/Carts/Buy" + b))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    om = JsonConvert.DeserializeObject<OrderMaster>(apiResponse);
+                }
+            }
+            return View(om);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Buy(OrderMaster om)
+        {
+            //string UserId = HttpContext.Session.GetString("UserId");
+            //int b = int.Parse(UserId);
+            //C.UserId = b;
+            //C.Food = null;
+            //C.User = null;
+            OrderMaster? o = new OrderMaster();
+
+            using (var httpClient = new HttpClient())
+            {
+
+                StringContent content1 = new StringContent(JsonConvert.SerializeObject(om), Encoding.UTF8, "application/json");
+                using (var response = await httpClient.PutAsync("https://localhost:7172/api/Carts/Payment", content1))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    o = JsonConvert.DeserializeObject<OrderMaster>(apiResponse);
+                }
+            }
+            if (o.Type == "Online")
+            {
+
+                return RedirectToAction("Online", new { OrderId = o.OrderId });
+            }
+            else
+            {
+                return RedirectToAction("Offline", new { OrderId = o.OrderId });
             }
         }
     }
-    }
-    
+
+}
 
