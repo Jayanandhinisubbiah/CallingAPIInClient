@@ -44,7 +44,7 @@ namespace CallingAPIInClient.Controllers
         }
         [HttpPost]
         public async Task<IActionResult> Login(UserList U)
-        {
+        {       U.CPassword=U.Password;
                 U.Lname = "";
                 U.Address = "";
                 U.Email = "";

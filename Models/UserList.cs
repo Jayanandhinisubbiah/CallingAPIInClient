@@ -22,7 +22,7 @@ namespace CallingAPIInClient.Models
 
         public string Password { get; set; }
         [Compare("Password", ErrorMessage = "Passwords do not match")]
-        public string CPassword { get; set; }
+        public string? CPassword { get; set; }
         public virtual Cart Cart { get; set; }
     }
 }
