@@ -170,11 +170,13 @@ namespace CallingAPIInClient.Controllers
             return View(om);
         }
         [HttpPost]
-        public async Task<IActionResult> Buy(OrderMaster om)
+        public async Task<IActionResult> Buy(OrderMaster O)
         {
             //string UserId = HttpContext.Session.GetString("UserId");
             //int b = int.Parse(UserId);
-            //C.UserId = b;
+            //O.Type = Type;
+            //O.OrderId = OrderId;
+            //O.UserId = b;
             //C.Food = null;
             //C.User = null;
             OrderMaster? o = new OrderMaster();
@@ -182,8 +184,8 @@ namespace CallingAPIInClient.Controllers
             using (var httpClient = new HttpClient())
             {
 
-                StringContent content1 = new StringContent(JsonConvert.SerializeObject(om), Encoding.UTF8, "application/json");
-                using (var response = await httpClient.PutAsync("https://localhost:7172/api/Carts/Payment", content1))
+                StringContent content1 = new StringContent(JsonConvert.SerializeObject(O), Encoding.UTF8, "application/json");
+                using (var response = await httpClient.PostAsync("https://localhost:7172/api/Carts/Payment", content1))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     o = JsonConvert.DeserializeObject<OrderMaster>(apiResponse);

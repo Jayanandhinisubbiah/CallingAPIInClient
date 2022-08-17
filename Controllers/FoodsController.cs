@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Text;
 
 namespace CallingAPIInClient.Controllers
 {
@@ -35,6 +36,29 @@ namespace CallingAPIInClient.Controllers
                 //returning the product list to view  
                 return View(ProductInfo);
             }
+
+        }
+        public async Task<IActionResult> AddFood(Food food)
+        {
+            //string UserId = HttpContext.Session.GetString("UserId");
+            //int b = int.Parse(UserId);
+            //C.UserId = b;
+            //C.Food = null;
+            //C.User = null;
+            Food f = new Food();
+
+            using (var httpClient = new HttpClient())
+            {
+
+                StringContent content1 = new StringContent(JsonConvert.SerializeObject(food), Encoding.UTF8, "application/json");
+                using (var response = await httpClient.PostAsync("https://localhost:7172/api/Foods", content1))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    f = JsonConvert.DeserializeObject<Food>(apiResponse);
+                }
+            }
+            return RedirectToAction("GetAllFoods");
+
         }
     }
 }

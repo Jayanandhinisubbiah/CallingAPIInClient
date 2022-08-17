@@ -7,31 +7,36 @@ namespace CallingAPIInClient.Controllers
     public class LoginController : Controller
     {
         public IActionResult Registration()
-        {
+        {  
+
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Registration(UserList U)
         {
             //HttpContext.Session.SetString("UserId", U.UserId.ToString());
+           
+                UserList prodobj = new UserList();
 
-            UserList prodobj = new UserList();
-            
-            using (var httpClient = new HttpClient())
-            {
-                StringContent content = new StringContent(JsonConvert.SerializeObject(U), Encoding.UTF8, "application/json");
-
-                using (var response = await httpClient.PostAsync("https://localhost:7172/api/Login/Registration", content))
+                using (var httpClient = new HttpClient())
                 {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    prodobj = JsonConvert.DeserializeObject<UserList>(apiResponse);
-                }
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(U), Encoding.UTF8, "application/json");
 
-                if (prodobj.Role == "Admin")
+                    using (var response = await httpClient.PostAsync("https://localhost:7172/api/Login/Registration", content))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        prodobj = JsonConvert.DeserializeObject<UserList>(apiResponse);
+                    }
+
+                if (prodobj != null && prodobj.Role == "Admin")
                     return RedirectToAction("Index", "User");
-                else
+                else if (prodobj != null && prodobj.Role == "User")
                     return RedirectToAction("Index", "Foods");
-            }
+                else
+                    return Registration();
+                }
+           
+            
         }
         public IActionResult Login()
         {
@@ -40,13 +45,13 @@ namespace CallingAPIInClient.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(UserList U)
         {
-            U.Lname = "";
-            U.Address = "";
-            U.Email = "";
-            U.Gender = "";
-            U.City = "";
+                U.Lname = "";
+                U.Address = "";
+                U.Email = "";
+                U.Gender = "";
+                U.City = "";
 
-            UserList prodobj = new UserList();
+                UserList prodobj = new UserList();
 
             using (var httpClient = new HttpClient())
             {
@@ -58,15 +63,22 @@ namespace CallingAPIInClient.Controllers
                     prodobj = JsonConvert.DeserializeObject<UserList>(apiResponse);
                     HttpContext.Session.SetString("UserId", prodobj.UserId.ToString());
 
+
                 }
 
-                if (prodobj.Role == "Admin")
+                if (prodobj != null && prodobj.Role == "Admin")
                     return RedirectToAction("Index", "User");
-                else
+                else if (prodobj != null && prodobj.Role == "User")
                     return RedirectToAction("GetAllFoods", "Foods");
-            }
-
+                else
+                    return RedirectToAction("Login");
+                    }
         }
     }
 }
+
+
+
+
+
 
