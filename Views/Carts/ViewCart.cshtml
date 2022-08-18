@@ -46,7 +46,9 @@
                 @Html.DisplayFor(modelItem => item.Qnt)
             </td>
             <td>
-                <a asp-action="Delete" asp-route-id="@item.CartId">Delete</a>
+                <a asp-action="Delete" asp-route-CartId="@item.CartId">Delete</a>
+                <a asp-action="Edit" asp-controller="Carts"  asp-route-CartId="@item.CartId">Edit</a>
+
             </td>
         </tr>
 }

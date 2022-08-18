@@ -158,7 +158,7 @@ namespace CallingAPIInClient.Controllers
         {
             string UserId = HttpContext.Session.GetString("UserId");
             int b = int.Parse(UserId);
-            OrderMaster ?om = new OrderMaster();
+            OrderMaster? om = new OrderMaster();
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync("https://localhost:7172/api/Carts/Buy" + b))
@@ -200,6 +200,86 @@ namespace CallingAPIInClient.Controllers
             {
                 return RedirectToAction("Offline", new { OrderId = o.OrderId });
             }
+        }
+        public async Task<IActionResult> Edit(int? CartId)
+        {
+
+            Cart C = new();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:7172/api/Carts/EditCart" + CartId))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    C = JsonConvert.DeserializeObject<Cart>(apiResponse);
+                }
+                HttpContext.Session.SetString("CartId", C.CartId.ToString());
+                HttpContext.Session.SetString("UserId", C.UserId.ToString());
+                HttpContext.Session.SetString("FoodId", C.FoodId.ToString());
+
+
+            }
+            return View(C);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Edit(int CartId,Cart C)
+        {
+            C.CartId = Convert.ToInt32(HttpContext.Session.GetString("CartId"));
+            C.UserId = Convert.ToInt32(HttpContext.Session.GetString("UserId"));
+            C.FoodId = Convert.ToInt32(HttpContext.Session.GetString("FoodId"));
+
+            //string UserId = HttpContext.Session.GetString("UserId");
+            //int b = int.Parse(UserId);
+            //C.UserId = b;
+            C.Food = null;
+            C.User = null;
+            Cart cart = new Cart();
+
+            using (var httpClient = new HttpClient())
+            {
+
+                StringContent content1 = new StringContent(JsonConvert.SerializeObject(C), Encoding.UTF8, "application/json");
+                using (var response = await httpClient.PutAsync("https://localhost:7172/api/Carts/Edit" + CartId, content1))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    cart = JsonConvert.DeserializeObject<Cart>(apiResponse);
+                }
+            }
+            return RedirectToAction("ViewCart");
+        }
+        public async Task<IActionResult> Delete(int? CartId)
+        {
+
+            Cart C = new();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:7172/api/Carts/DCart" + CartId))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    C = JsonConvert.DeserializeObject<Cart>(apiResponse);
+                }
+            }
+            return View(C);
+        }
+        [HttpPost]
+        public async Task<IActionResult> DeleteCart(int CartId, Cart C)
+        {
+            string UserId = HttpContext.Session.GetString("UserId");
+            int b = int.Parse(UserId);
+            C.UserId = b;
+            C.Food = null;
+            C.User = null;
+            Cart cart = new Cart();
+
+            using (var httpClient = new HttpClient())
+            {
+
+                using (var response = await httpClient.DeleteAsync("https://localhost:7172/api/Carts/Delete" + CartId))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    cart = JsonConvert.DeserializeObject<Cart>(apiResponse);
+                }
+            }
+            return RedirectToAction("ViewCart");
         }
     }
 
