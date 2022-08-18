@@ -170,22 +170,16 @@ namespace CallingAPIInClient.Controllers
             return View(om);
         }
         [HttpPost]
-        public async Task<IActionResult> Buy(OrderMaster O)
+        public async Task<IActionResult> Buy(int OrderId,OrderMaster O)
         {
-            //string UserId = HttpContext.Session.GetString("UserId");
-            //int b = int.Parse(UserId);
-            //O.Type = Type;
-            //O.OrderId = OrderId;
-            //O.UserId = b;
-            //C.Food = null;
-            //C.User = null;
+           
             OrderMaster? o = new OrderMaster();
 
             using (var httpClient = new HttpClient())
             {
 
                 StringContent content1 = new StringContent(JsonConvert.SerializeObject(O), Encoding.UTF8, "application/json");
-                using (var response = await httpClient.PostAsync("https://localhost:7172/api/Carts/Payment", content1))
+                using (var response = await httpClient.PutAsync("https://localhost:7172/api/Carts/Payment"+OrderId, content1))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     o = JsonConvert.DeserializeObject<OrderMaster>(apiResponse);
@@ -201,7 +195,40 @@ namespace CallingAPIInClient.Controllers
                 return RedirectToAction("Offline", new { OrderId = o.OrderId });
             }
         }
-        public async Task<IActionResult> Edit(int? CartId)
+        [HttpGet]
+        public async Task<IActionResult> Online(int OrderId)
+        {
+            string UserId = HttpContext.Session.GetString("UserId");
+            int b = int.Parse(UserId);
+            OrderMaster? om = new OrderMaster();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:7172/api/Carts/Pay" + OrderId))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    om = JsonConvert.DeserializeObject<OrderMaster>(apiResponse);
+                }
+            }
+            return View(om);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Online(int OrderId, OrderMaster O)
+        {
+
+            OrderMaster? o = new OrderMaster();
+
+            using (var httpClient = new HttpClient())
+            {
+
+                StringContent content1 = new StringContent(JsonConvert.SerializeObject(O), Encoding.UTF8, "application/json");
+                using (var response = await httpClient.PutAsync("https://localhost:7172/api/Carts/Pay" + OrderId, content1))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                }
+            }
+            return RedirectToAction("Thankyou","Home");
+        }
+            public async Task<IActionResult> Edit(int? CartId)
         {
 
             Cart C = new();
@@ -280,6 +307,39 @@ namespace CallingAPIInClient.Controllers
                 }
             }
             return RedirectToAction("ViewCart");
+        }
+        [HttpGet]
+        public async Task<IActionResult> Offline(int OrderId)
+        {
+            string UserId = HttpContext.Session.GetString("UserId");
+            int b = int.Parse(UserId);
+            OrderMaster? om = new OrderMaster();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:7172/api/Carts/Pay" + OrderId))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    om = JsonConvert.DeserializeObject<OrderMaster>(apiResponse);
+                }
+            }
+            return View(om);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Offline(int OrderId, OrderMaster O)
+        {
+
+            OrderMaster? o = new OrderMaster();
+
+            using (var httpClient = new HttpClient())
+            {
+
+                StringContent content1 = new StringContent(JsonConvert.SerializeObject(O), Encoding.UTF8, "application/json");
+                using (var response = await httpClient.PutAsync("https://localhost:7172/api/Carts/Pay" + OrderId, content1))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                }
+            }
+            return RedirectToAction("Thankyou","Home");
         }
     }
 

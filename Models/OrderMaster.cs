@@ -10,7 +10,8 @@ namespace CallingAPIInClient.Models
         [Display(Name = "Payment Type")]
         public string? Type { get; set; }
         public string? BankName { get; set; }
-        public UInt32? CardNo { get; set; }
+
+        public string? CardNo { get; set; }
         public int? CCV { get; set; }
         public virtual UserList? User { get; set; }
         public virtual ICollection<OrderDetails>? OrderDetails { get; set; }

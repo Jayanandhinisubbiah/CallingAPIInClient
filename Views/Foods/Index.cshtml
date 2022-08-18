@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<CallingAPIInClient.Models.Food>
 
 @{
-    ViewData["Title"] = "GetAllFoods";
+    ViewData["Title"] = "Index";
 }
 
-<h1>GetAllFoods</h1>
+<h1>Index</h1>
 
-@*<p>
-    <a asp-action="AddFood">Create New</a>
-</p>*@
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
 <table class="table">
     <thead>
         <tr>
@@ -55,9 +55,9 @@
                 @Html.DisplayFor(modelItem => item.Detail)
             </td>
             <td>
-                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
-                @*@Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |*@
-                <a asp-action="AddtoCart" asp-controller="Carts" asp-route-FoodId="@item.FoodId">Add to Cart</a>|
+                @Html.ActionLink("Edit", "Edit", new {  FoodId=item.FoodId  }) |
+                @Html.ActionLink("Details", "Details", new { FoodId=item.FoodId }) |
+                @Html.ActionLink("Delete", "Delete", new { FoodId=item.FoodId })
             </td>
         </tr>
 }

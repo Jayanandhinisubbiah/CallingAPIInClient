@@ -29,9 +29,9 @@ namespace CallingAPIInClient.Controllers
                     }
 
                 if (prodobj != null && prodobj.Role == "Admin")
-                    return RedirectToAction("Index", "User");
-                else if (prodobj != null && prodobj.Role == "User")
                     return RedirectToAction("Index", "Foods");
+                else if (prodobj != null && prodobj.Role == "User")
+                    return RedirectToAction("GetAllFoods", "Foods");
                 else
                     return Registration();
                 }
@@ -67,7 +67,7 @@ namespace CallingAPIInClient.Controllers
                 }
 
                 if (prodobj != null && prodobj.Role == "Admin")
-                    return RedirectToAction("Index", "User");
+                    return RedirectToAction("Index", "Foods");
                 else if (prodobj != null && prodobj.Role == "User")
                     return RedirectToAction("GetAllFoods", "Foods");
                 else
