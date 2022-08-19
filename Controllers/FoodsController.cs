@@ -101,7 +101,7 @@ namespace CallingAPIInClient.Controllers
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     C = JsonConvert.DeserializeObject<Food>(apiResponse);
                 }
-               
+
 
 
             }
@@ -110,9 +110,9 @@ namespace CallingAPIInClient.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int foodId, Food C)
         {
-           
 
-            
+
+
             Food cart = new Food();
 
             using (var httpClient = new HttpClient())
@@ -144,7 +144,7 @@ namespace CallingAPIInClient.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteFood(int FoodId)
         {
-           
+
             Food food = new Food();
 
             using (var httpClient = new HttpClient())
@@ -171,6 +171,35 @@ namespace CallingAPIInClient.Controllers
                 }
             }
             return View(food);
+        }
+        public async Task<IActionResult> NewOrder()
+        {
+            List<NewOrder> NewOrderInfo = new List<NewOrder>();
+            // HttpClient client = new HttpClient();
+
+            using (var client = new HttpClient())
+            {
+                //Passing service base url  
+                client.DefaultRequestHeaders.Clear();
+                //Define request data format  
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+                //Sending request to find web api REST service resource GetAllEmployees using HttpClient  
+                HttpResponseMessage Res = await client.GetAsync("https://localhost:7172/api/Foods/NewOrder");
+
+                //Checking the response is successful or not which is sent using HttpClient  
+                if (Res.IsSuccessStatusCode)
+                {
+                    //Storing the response details recieved from web api   
+                    var ProdResponse = Res.Content.ReadAsStringAsync().Result;
+
+                    //Deserializing the response recieved from web api and storing into the product list  
+                    NewOrderInfo = JsonConvert.DeserializeObject<List<NewOrder>>(ProdResponse);
+
+                }
+                //returning the product list to view  
+                return View(NewOrderInfo);
+            }
         }
     }
 }
