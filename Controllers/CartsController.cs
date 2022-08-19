@@ -203,7 +203,7 @@ namespace CallingAPIInClient.Controllers
             OrderMaster? om = new OrderMaster();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:7172/api/Carts/Pay" + OrderId))
+                using (var response = await httpClient.GetAsync("https://localhost:7172/api/Carts/On" + OrderId))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     om = JsonConvert.DeserializeObject<OrderMaster>(apiResponse);
@@ -221,7 +221,7 @@ namespace CallingAPIInClient.Controllers
             {
 
                 StringContent content1 = new StringContent(JsonConvert.SerializeObject(O), Encoding.UTF8, "application/json");
-                using (var response = await httpClient.PutAsync("https://localhost:7172/api/Carts/Pay" + OrderId, content1))
+                using (var response = await httpClient.PutAsync("https://localhost:7172/api/Carts/On" + OrderId, content1))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                 }
@@ -316,7 +316,7 @@ namespace CallingAPIInClient.Controllers
             OrderMaster? om = new OrderMaster();
             using (var httpClient = new HttpClient())
             {
-                using (var response = await httpClient.GetAsync("https://localhost:7172/api/Carts/Pay" + OrderId))
+                using (var response = await httpClient.GetAsync("https://localhost:7172/api/Carts/On" + OrderId))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     om = JsonConvert.DeserializeObject<OrderMaster>(apiResponse);
@@ -334,7 +334,7 @@ namespace CallingAPIInClient.Controllers
             {
 
                 StringContent content1 = new StringContent(JsonConvert.SerializeObject(O), Encoding.UTF8, "application/json");
-                using (var response = await httpClient.PutAsync("https://localhost:7172/api/Carts/Pay" + OrderId, content1))
+                using (var response = await httpClient.PutAsync("https://localhost:7172/api/Carts/On" + OrderId, content1))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
                 }
