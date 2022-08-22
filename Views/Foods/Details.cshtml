@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    var photopath = "~/Image/" + Model.Image;
 }
 
 <h1>Details</h1>
@@ -34,13 +35,13 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.price)
         </dd>
-        @*<dt class = "col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Image)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Image)
-               @*<img src="~/Images/model.Image" alt="no data" height="100" width="100"/>*@
-        @*</dd>*@
+            @*@Html.DisplayFor(model => model.Image)*@
+               <img src="@photopath" alt="no data" height="100" width="100"asp-append-version="true"/>
+        </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Detail)
         </dt>
