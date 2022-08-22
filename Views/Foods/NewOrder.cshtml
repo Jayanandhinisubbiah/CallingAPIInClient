@@ -13,7 +13,7 @@
     <thead>
         <tr>
             
-                @*@Html.DisplayNameFor(model => model.count)*@New Order
+                @*@Html.DisplayNameFor(model => model.count)*@New Order-
             
         </tr>
         <tr>
@@ -68,7 +68,7 @@
             </td>
             <td>
                 @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
-                @Html.ActionLink("Dispatch", "Details", new { /* id=item.PrimaryKey */ }) Dispatch|
+                @Html.ActionLink("Dispatch", "Dispatch",new {  Id=item.Id }) |
                 @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
             </td>
         </tr>
