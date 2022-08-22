@@ -1,13 +1,19 @@
 ﻿using CallingAPIInClient.Models;
+using CallingAPIInClient.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-
+using Microsoft.AspNetCore.Hosting;
 namespace CallingAPIInClient.Controllers
 {
     public class FoodsController : Controller
     {
+        private readonly Microsoft.AspNetCore.Hosting.IHostingEnvironment _environment;
+        public FoodsController(Microsoft.AspNetCore.Hosting.IHostingEnvironment hostingEnvironment)
+        {
+            this._environment = hostingEnvironment;
+        }
         public async Task<IActionResult> GetAllFoods()
         {
             List<Food> ProductInfo = new List<Food>();
@@ -43,23 +49,39 @@ namespace CallingAPIInClient.Controllers
             return View();
         }
             [HttpPost]
-        public async Task<IActionResult> AddFood(Food food)
+        public async Task<IActionResult> AddFood(FoodViewModel food)
         {
             //string UserId = HttpContext.Session.GetString("UserId");
             //int b = int.Parse(UserId);
             //C.UserId = b;
             //C.Food = null;
             //C.User = null;
-            Food f = new Food();
+            //FoodViewModel f = new FoodViewModel();
+            string uniqueFileName = null;
+            if(food.ImageView!=null)
+            {
+                string uploadsFolder = Path.Combine(_environment.WebRootPath,"Image");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + food.ImageView.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                food.ImageView.CopyTo(new FileStream(filePath, FileMode.Create));
+            }
+            Food j = new Food
+            {
+                FoodName = food.FoodName,
+                CategoryName = food.CategoryName,
+                price = food.price,
+                Image = uniqueFileName,
+                Detail = food.Detail
 
+            };
             using (var httpClient = new HttpClient())
             {
 
-                StringContent content1 = new StringContent(JsonConvert.SerializeObject(food), Encoding.UTF8, "application/json");
+                StringContent content1 = new StringContent(JsonConvert.SerializeObject(j), Encoding.UTF8, "application/json");
                 using (var response = await httpClient.PostAsync("https://localhost:7172/api/Foods", content1))
                 {
                     string apiResponse = await response.Content.ReadAsStringAsync();
-                    f = JsonConvert.DeserializeObject<Food>(apiResponse);
+                    j = JsonConvert.DeserializeObject<Food>(apiResponse);
                 }
             }
             return RedirectToAction("Index");

@@ -1,4 +1,4 @@
-﻿@model CallingAPIInClient.Models.Food
+﻿@model CallingAPIInClient.ViewModels.FoodViewModel
 
 @{
     ViewData["Title"] = "AddFood";
@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddFood">
+        <form enctype="multipart/form-data" asp-action="AddFood">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
            @* <div class="form-group">
                 <label asp-for="FoodId" class="control-label"></label>
@@ -33,9 +33,8 @@
                 <span asp-validation-for="price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Image" class="control-label"></label>
-                <input asp-for="Image" type="file"/>
-                <span asp-validation-for="Image" class="text-danger"></span>
+                <label asp-for="ImageView" class="custom-file-label">Choose File...</label>
+                <input asp-for="ImageView"  class="form-control custom-file-input"/>
             </div>
             <div class="form-group">
                 <label asp-for="Detail" class="control-label"></label>
