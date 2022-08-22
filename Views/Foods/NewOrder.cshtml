@@ -43,7 +43,8 @@
 @foreach (var item in Model) {
     <tr>
          
-               @Html.DisplayFor(modelItem => item.count)
+               @*@Html.DisplayFor(modelItem => item.count)*@
+               @Model.Count();
             
 </tr>
         <tr>

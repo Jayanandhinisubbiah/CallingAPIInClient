@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public int OrderId { get; set; }
 
-        public int count { get; set; }
+        //public int? count { get; set; }
         public string Email { get; set; }
         //public UserList user { get; set; }
         public string Image { get; set; }

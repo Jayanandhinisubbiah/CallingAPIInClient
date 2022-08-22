@@ -62,7 +62,7 @@ namespace CallingAPIInClient.Controllers
                     f = JsonConvert.DeserializeObject<Food>(apiResponse);
                 }
             }
-            return RedirectToAction("GetAllFoods");
+            return RedirectToAction("Index");
 
         }
         public async Task<IActionResult> Index()
