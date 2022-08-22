@@ -31,7 +31,7 @@ namespace CallingAPIInClient.Controllers
                 if (prodobj != null && prodobj.Role == "Admin")
                     return RedirectToAction("Index", "Foods");
                 else if (prodobj != null && prodobj.Role == "User")
-                    return RedirectToAction("GetAllFoods", "Foods");
+                    return RedirectToAction("Login", "Login");
                 else
                     return Registration();
                 }
