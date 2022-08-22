@@ -13,7 +13,7 @@
     <thead>
         <tr>
             
-                @*@Html.DisplayNameFor(model => model.count)*@New Order-
+                @*@Html.DisplayNameFor(model => model.count)*@New Order- @Model.Count()
             
         </tr>
         <tr>
@@ -40,13 +40,14 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-    <tr>
+         @*<tr>*@
          
                @*@Html.DisplayFor(modelItem => item.count)*@
-               @Model.Count();
+              
             
-</tr>
+@*</tr>*@
+@foreach (var item in Model) {
+   
         <tr>
            
             <td>
