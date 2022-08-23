@@ -48,7 +48,7 @@ namespace CallingAPIInClient.Controllers
         {
             return View();
         }
-            [HttpPost]
+        [HttpPost]
         public async Task<IActionResult> AddFood(FoodViewModel food)
         {
             //string UserId = HttpContext.Session.GetString("UserId");
@@ -57,14 +57,7 @@ namespace CallingAPIInClient.Controllers
             //C.Food = null;
             //C.User = null;
             //FoodViewModel f = new FoodViewModel();
-            string uniqueFileName = null;
-            if(food.ImageView!=null)
-            {
-                string uploadsFolder = Path.Combine(_environment.WebRootPath,"Image");
-                uniqueFileName = Guid.NewGuid().ToString() + "_" + food.ImageView.FileName;
-                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                food.ImageView.CopyTo(new FileStream(filePath, FileMode.Create));
-            }
+            string uniqueFileName = ProcessUploadedFile(food);
             Food j = new Food
             {
                 FoodName = food.FoodName,
@@ -87,6 +80,22 @@ namespace CallingAPIInClient.Controllers
             return RedirectToAction("Index");
 
         }
+
+        private string ProcessUploadedFile(FoodViewModel food)
+        {
+            string uniqueFileName = null;
+            if (food.ImageView != null)
+            {
+                string uploadsFolder = Path.Combine(_environment.WebRootPath, "Image");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + food.ImageView.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream= new FileStream(filePath, FileMode.Create))
+                    food.ImageView.CopyTo(fileStream);
+            }
+
+            return uniqueFileName;
+        }
+
         public async Task<IActionResult> Index()
         {
             List<Food> ProductInfo = new List<Food>();
@@ -121,6 +130,7 @@ namespace CallingAPIInClient.Controllers
         {
 
             Food C = new();
+
             using (var httpClient = new HttpClient())
             {
                 using (var response = await httpClient.GetAsync("https://localhost:7172/api/Foods/" + FoodId))
@@ -132,28 +142,53 @@ namespace CallingAPIInClient.Controllers
 
 
             }
-            return View(C);
+            FoodEditViewModel foodEditViewModel = new FoodEditViewModel
+            {
+                FoodId = C.FoodId,
+                CategoryName = C.CategoryName,
+                FoodName = C.FoodName,
+                price = C.price,
+                Detail = C.Detail,
+                ExistingPhotoPath = C.Image
+            };
+            return View(foodEditViewModel);
         }
         [HttpPost]
-        public async Task<IActionResult> Edit(int foodId, Food C)
+        public async Task<IActionResult> Edit(FoodEditViewModel model)
         {
 
+            
 
-
-            Food cart = new Food();
-
-            using (var httpClient = new HttpClient())
+                Food cart = new Food();
+            cart.FoodId = model.FoodId;
+            cart.CategoryName = model.CategoryName;
+            cart.FoodName = model.FoodName;
+            cart.price = model.price;
+            cart.Detail = model.Detail;
+            if(model.ImageView!=null)
             {
-
-                StringContent content1 = new StringContent(JsonConvert.SerializeObject(C), Encoding.UTF8, "application/json");
-                using (var response = await httpClient.PutAsync("https://localhost:7172/api/Foods/" + foodId, content1))
+                if(model.ExistingPhotoPath!=null)
                 {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    cart = JsonConvert.DeserializeObject<Food>(apiResponse);
+                    string filePath = Path.Combine(_environment.WebRootPath, "Image", model.ExistingPhotoPath);
+                    System.IO.File.Delete(filePath);
                 }
+                cart.Image = ProcessUploadedFile(model);
             }
-            return RedirectToAction("Index");
-        }
+
+                using (var httpClient = new HttpClient())
+                {
+
+                    StringContent content1 = new StringContent(JsonConvert.SerializeObject(cart), Encoding.UTF8, "application/json");
+                    using (var response = await httpClient.PutAsync("https://localhost:7172/api/Foods/" + model.FoodId, content1))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        cart = JsonConvert.DeserializeObject<Food>(apiResponse);
+                    }
+                }
+                return RedirectToAction("Index");
+            }
+        
+    
         public async Task<IActionResult> Delete(int? FoodId)
         {
 
