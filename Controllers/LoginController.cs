@@ -28,10 +28,15 @@ namespace CallingAPIInClient.Controllers
                         prodobj = JsonConvert.DeserializeObject<UserList>(apiResponse);
                     }
 
-                if (prodobj != null && prodobj.Role == "Admin")
-                    return RedirectToAction("Index", "Foods");
-                else if (prodobj != null && prodobj.Role == "User")
+                //if (prodobj != null && prodobj.Role == "Admin")
+                //    return RedirectToAction("Index", "Foods");
+                //else if (prodobj != null && prodobj.Role == "User")
+                //    return RedirectToAction("Login", "Login");
+                if(prodobj!=null)
+                {
                     return RedirectToAction("Login", "Login");
+
+                }
                 else
                     return Registration();
                 }
@@ -67,12 +72,25 @@ namespace CallingAPIInClient.Controllers
                 }
 
                 if (prodobj != null && prodobj.Role == "Admin")
+                {
+                    HttpContext.Session.SetString("Username", prodobj.FName);
+
                     return RedirectToAction("Index", "Foods");
+                }
                 else if (prodobj != null && prodobj.Role == "User")
+                {
+                    HttpContext.Session.SetString("Username", prodobj.FName);
+
                     return RedirectToAction("GetAllFoods", "Foods");
+                }
                 else
                     return RedirectToAction("Login");
                     }
+        }
+        public async Task<IActionResult> logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Login");
         }
     }
 }
