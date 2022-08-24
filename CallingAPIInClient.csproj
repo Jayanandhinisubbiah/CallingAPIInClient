@@ -21,4 +21,8 @@
     <Folder Include="wwwroot\Image\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\Scripts\Custom\Script.js" />
+  </ItemGroup>
+
 </Project>

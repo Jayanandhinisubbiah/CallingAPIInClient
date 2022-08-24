@@ -1,21 +1,23 @@
-﻿@model IEnumerable<CallingAPIInClient.Models.NewOrder>
+﻿@using Microsoft.CodeAnalysis.Scripting
+@model IEnumerable<CallingAPIInClient.Models.NewOrder>
 
 @{
     ViewData["Title"] = "NewOrder";
 }
+                <script src="~/Script/Script.js" type="text/javascript"></script>
 
-@*<h1>NewOrder</h1>*@
+<h1>NewOrder</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
-        <tr>
+       @* <tr>
             
-                @*@Html.DisplayNameFor(model => model.count)*@New Order- @Model.Count()
+               New Order- @Model.Count()
             
-        </tr>
+        </tr>*@
         <tr>
             
             <th>
@@ -36,16 +38,14 @@
             <th>
                 @Html.DisplayNameFor(model => model.TotalPrice)
             </th>
+             <th>
+                @Html.DisplayNameFor(model => model.status)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-         @*<tr>*@
-         
-               @*@Html.DisplayFor(modelItem => item.count)*@
-              
-            
-@*</tr>*@
+        
 @foreach (var item in Model) {
    
         <tr>
@@ -68,12 +68,34 @@
             <td>
                 @Html.DisplayFor(modelItem => item.TotalPrice)
             </td>
+            <td class="Style" >
+                <div>
+                <a onclick="but()" href="#">Dispatch</a>
+                </div>
+                
+           </td>
             <td>
-                @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
-                @Html.ActionLink("Dispatch", "Dispatch",new {  Id=item.Id }) |
-                @*@Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+                @*@Html.ActionLink("Dispatch", "Dispatch",new {  Id=item.Id }) |*@
             </td>
         </tr>
 }
     </tbody>
 </table>
+@section Script
+{
+    <script type="text/javascript">
+function but() {
+     alert('Order Dispatched '+"!");
+
+    //let btnsend = document.querySelector('button');
+    //btnsend.addEventListener('click', () => {
+    //   btnsend.innerText = 'Dispatched';
+        //setTimeout(() => {
+            //btnsend.style.display = "none";
+            //message.innerText = 'Message Sent';
+
+            //}, 1000);
+//});
+}
+    </script>
+}
