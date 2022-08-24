@@ -266,52 +266,65 @@ namespace CallingAPIInClient.Controllers
         //public async Task<IActionResult> Dispatch(int Id)
         //{
 
-        //    NewOrder C = new();
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        using (var response = await httpClient.GetAsync("https://localhost:7172/api/Foods/DispatchNewOrder" + Id))
-        //        {
-        //            string apiResponse = await response.Content.ReadAsStringAsync();
-        //            C = JsonConvert.DeserializeObject<NewOrder>(apiResponse);
-        //        }
-        //    }
-        //    HttpContext.Session.SetString("OrderId", C.OrderId.ToString());
+            //NewOrder C = new();
+            //using (var httpClient = new HttpClient())
+            //{
+            //    using (var response = await httpClient.GetAsync("https://localhost:7172/api/Foods/DispatchNewOrder" + Id))
+            //    {
+            //        string apiResponse = await response.Content.ReadAsStringAsync();
+            //        C = JsonConvert.DeserializeObject<NewOrder>(apiResponse);
+            //    }
+            //}
+            //HttpContext.Session.SetString("OrderId", C.OrderId.ToString());
 
-        //    return View(C);
+            //return View(C);
         //}
         //[HttpPost]
-        //    public async Task<IActionResult> DispatchConfirmed(int Id)
-        //    {
-        //    string OrderId = HttpContext.Session.GetString("OrderId");
-        //    int b = int.Parse(OrderId);
-        //    //List<NewOrder> food = new List<NewOrder>();
+        public async Task<IActionResult> DispatchConfirmed(int Id)
+        {
+            NewOrder C = new();
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.GetAsync("https://localhost:7172/api/Foods/DispatchNewOrder" + Id))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    C = JsonConvert.DeserializeObject<NewOrder>(apiResponse);
+                }
+            }
+            HttpContext.Session.SetString("OrderId", C.OrderId.ToString());
 
-        //    using (var httpClient = new HttpClient())
-        //        {
 
-        //            using (var response = await httpClient.DeleteAsync("https://localhost:7172/api/Foods/DispatchOrder" + Id))
-        //            {
-        //                string apiResponse = await response.Content.ReadAsStringAsync();
-        //                //food = JsonConvert.DeserializeObject<List<NewOrder>>(apiResponse);
-        //            }
-        //        }
-        //    return RedirectToAction("EmptyOrder", new { OrderId = b});
-        //}
-        //[HttpGet]
-        //public async Task<IActionResult> EmptyOrder(int OrderId)
-        //{
+            string OrderId = HttpContext.Session.GetString("OrderId");
+            int b = int.Parse(OrderId);
+            //List<NewOrder> food = new List<NewOrder>();
 
-        //    //string UserId = HttpContext.Session.GetString("OrderId");
-        //    //int b = int.Parse(UserId);
-        //    using (var httpClient = new HttpClient())
-        //    {
-        //        using (var response = await httpClient.DeleteAsync("https://localhost:7172/api/Foods/EmptyOrder" + OrderId))
-        //        {
-        //            string apiResponse = await response.Content.ReadAsStringAsync();
-        //        }
-        //    }
-        //    return RedirectToAction("NewOrder");
-        //}
+            using (var httpClient = new HttpClient())
+            {
+
+                using (var response = await httpClient.DeleteAsync("https://localhost:7172/api/Foods/DispatchOrder" + Id))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    //food = JsonConvert.DeserializeObject<List<NewOrder>>(apiResponse);
+                }
+            }
+            return RedirectToAction("EmptyOrder", new { OrderId = b });
+        }
+        //
+        [HttpGet]
+        public async Task<IActionResult> EmptyOrder(int OrderId)
+        {
+
+            string UserId = HttpContext.Session.GetString("OrderId");
+            int b = int.Parse(UserId);
+            using (var httpClient = new HttpClient())
+            {
+                using (var response = await httpClient.DeleteAsync("https://localhost:7172/api/Foods/EmptyOrder" + OrderId))
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                }
+            }
+            return RedirectToAction("NewOrder");
+        }
 
     }
 }

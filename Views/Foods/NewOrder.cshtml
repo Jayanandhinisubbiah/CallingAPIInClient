@@ -13,11 +13,11 @@
 </p>
 <table class="table">
     <thead>
-       @* <tr>
+        <tr>
             
                New Order- @Model.Count()
             
-        </tr>*@
+        </tr>
         <tr>
             
             <th>
@@ -70,8 +70,11 @@
             </td>
             <td class="Style" >
                 <div>
-                <input type="button" id="button" value="Dispatch"onclick="this.value=(this.value=='Dispatch')?('Dispatched'):('Dispatched')"/>
-                </div>
+                @*<input type="button" id="button" value="Dispatch" asp-action="Disp"  onclick="this.value=(this.value=='Dispatch')?('Dispatched'):('Dispatched')"/>*@
+    @Html.ActionLink("Dispatch", "DispatchConfirmed",new {  Id=item.Id },new { onclick = "myFun()"})
+    @*@Html.ActionLink(" Dispatch", "Dispatch", new { id = item.Id }, new { onclick = "Dispatch(item.Id)", @class = "delete-button" })*@
+    @*<button asp-action="Dispatch" asp-route-Id="@item.Id"  onclick="myFun()" onclick = "return confirm('Are you sure you want to delete this user?');">Dispatch</button>*@
+            </div>
                 
            </td>
             <td>
@@ -84,7 +87,10 @@
 @section Script
 {
     <script type="text/javascript">
+function myFun() {
+    alert("Order dispatched");
 
+}
     
     </script>
 }

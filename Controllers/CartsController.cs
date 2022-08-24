@@ -66,7 +66,8 @@ namespace CallingAPIInClient.Controllers
                     cart = JsonConvert.DeserializeObject<Cart>(apiResponse);
                 }
             }
-            return RedirectToAction("ViewCart"/*, new { UserId = cart.UserId }*/);
+            return RedirectToAction("GetAllFoods", "Foods");
+            //return RedirectToAction("ViewCart"/*, new { UserId = cart.UserId }*/);
         }
         public async Task<IActionResult> ViewCart()
         {
