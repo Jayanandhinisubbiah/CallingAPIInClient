@@ -38,10 +38,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.TotalPrice)
             </th>
-             <th>
+             @*<th>
                 @Html.DisplayNameFor(model => model.status)
-            </th>
-            <th></th>
+            </th>*@
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
@@ -70,7 +70,7 @@
             </td>
             <td class="Style" >
                 <div>
-                <a onclick="but()" href="#">Dispatch</a>
+                <input type="button" id="button" value="Dispatch"onclick="this.value=(this.value=='Dispatch')?('Dispatched'):('Dispatched')"/>
                 </div>
                 
            </td>
@@ -84,18 +84,7 @@
 @section Script
 {
     <script type="text/javascript">
-function but() {
-     alert('Order Dispatched '+"!");
 
-    //let btnsend = document.querySelector('button');
-    //btnsend.addEventListener('click', () => {
-    //   btnsend.innerText = 'Dispatched';
-        //setTimeout(() => {
-            //btnsend.style.display = "none";
-            //message.innerText = 'Message Sent';
-
-            //}, 1000);
-//});
-}
+    
     </script>
 }
