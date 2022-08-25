@@ -1,11 +1,30 @@
-﻿@model IEnumerable<CallingAPIInClient.Models.Food>
+﻿
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+</head>
+<body>
+
+<div class="sidebar">
+  <a asp-action="ViewCart"asp-controller="Carts">View Cart</a>
+</div>
+
+<div class="content" class="sidebar">
+  
+
+
+
+<!-- Page Content -->
+@model IEnumerable<CallingAPIInClient.Models.Food>
 
 @{
     ViewData["Title"] = "GetAllFoods";
     Layout = "_LogPartial";
 }
-
-<h1>GetAllFoods</h1>
+<div class="w3-teal">
+  <h1>GetAllFoods</h1>
 
 @*<p>
     <a asp-action="AddFood">Create New</a>
@@ -14,13 +33,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FoodId)
+                Food Id
+                @*@Html.DisplayNameFor(model => model.FoodId)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
+                Category Name
+                @*@Html.DisplayNameFor(model => model.CategoryName)*@
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FoodName)
+                Food Name
+                @*@Html.DisplayNameFor(model => model.FoodName)*@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.price)
@@ -68,3 +90,15 @@
 }
     </tbody>
 </table>
+</div>
+
+
+
+
+
+
+     
+</div>
+
+</body>
+</html>
