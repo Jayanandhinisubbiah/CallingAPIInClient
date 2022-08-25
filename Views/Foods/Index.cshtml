@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "_LayoutAdmin";
 }
 
 <h1>Index</h1>
@@ -58,9 +59,11 @@
                 @Html.DisplayFor(modelItem => item.Detail)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new {  FoodId=item.FoodId  }) |
+                @Html.ActionLink("Edit", "Edit", new {  FoodId=item.FoodId  } ) |
+                @*<a asp-action="Edit" asp-route-FoodId="@item.FoodId" class="btn-group btn-primary">Edit</a>*@
                 @Html.ActionLink("Details", "Details", new { FoodId=item.FoodId }) |
                 @Html.ActionLink("Delete", "Delete", new { FoodId=item.FoodId })
+
             </td>
         </tr>
 }

@@ -1,6 +1,11 @@
 ﻿@using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
 
+@{
+    Layout="";
+ViewBag.Data = @HttpContextAccessor.HttpContext.Session.GetString("Username");
+
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,6 +15,40 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/CallingAPIInClient.styles.css" asp-append-version="true" />
+    <style>
+body {margin:0;}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+li {
+  float: left;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #04AA6D;
+}
+</style>
 </head>
 <body>
     <header>
@@ -30,25 +69,20 @@
                         </li>
                     </ul>
                 </div>*@
-                                   <ul class="navbar-nav">
-    @{
-        ViewBag.Data = @HttpContextAccessor.HttpContext.Session.GetString("Username");
-    }
     @if (ViewBag.Data != null)
     {
-        <li class="nav-item">
-            <a id="manage" class="nav-link text-dark"  title="Manage">Hello @ViewBag.Data!</a>
-        </li>
-        <li class="nav-item">
-            <form>
-                <button id="logout" type="submit" class="nav-link btn btn-link text-dark" asp-controller="Login" asp-action="Logout">Logout</button>
-            </form>
-            @*</form>*@
-        </li>
-    }
-   
-</ul>
+        <ul>
+  <li><a  asp-action="AddFood" asp-controller="Foods">Add Food</a></li>
+  <li><a class="active" asp-action="Index" asp-controller="Foods">Index</a></li>
+  <li><a asp-action="NewOrder" asp-controller="Foods">New Orders</a></li>
+  <li><a asp-action="logout" asp-controller="Home">Logout</a></li>
+  <li><a class="text-light">Hello Admin @ViewBag.Data!</a></li>
 
+       @* <li >
+            <a id="manage" class="nav-link text-dark"  title="Manage">Hello Admin @ViewBag.Data!</a>
+        </li>*@
+       </ul>                            
+    }
             </div>
         </nav>
     </header>
@@ -77,3 +111,10 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+
+
+
+
+
+

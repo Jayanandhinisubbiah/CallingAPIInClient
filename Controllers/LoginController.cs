@@ -88,11 +88,7 @@ namespace CallingAPIInClient.Controllers
                     return RedirectToAction("Login");
                     }
         }
-        public async Task<IActionResult> logout()
-        {
-            HttpContext.Session.Clear();
-            return RedirectToAction("Login", "Login");
-        }
+        
     }
 }
 

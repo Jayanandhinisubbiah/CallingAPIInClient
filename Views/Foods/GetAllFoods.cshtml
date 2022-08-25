@@ -1,27 +1,10 @@
 ﻿
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-</head>
-<body>
-
-<div class="sidebar">
-  <a asp-action="ViewCart"asp-controller="Carts">View Cart</a>
-</div>
-
-<div class="content" class="sidebar">
-  
-
-
-
-<!-- Page Content -->
 @model IEnumerable<CallingAPIInClient.Models.Food>
 
 @{
     ViewData["Title"] = "GetAllFoods";
-    Layout = "_LogPartial";
+    Layout = "_LayoutUser";
 }
 <div class="w3-teal">
   <h1>GetAllFoods</h1>
@@ -98,7 +81,4 @@
 
 
      
-</div>
 
-</body>
-</html>

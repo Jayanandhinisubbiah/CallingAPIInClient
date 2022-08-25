@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "AddFood";
+        Layout="_LayoutAdmin";
+
 }
 
 <h1>AddFood</h1>
@@ -49,7 +51,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="Home">Back to List</a>
 </div>
 
 @section Scripts {

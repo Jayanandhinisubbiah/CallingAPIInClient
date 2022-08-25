@@ -27,6 +27,11 @@ namespace CallingAPIInClient.Controllers
         {
             return View();
         }
+        public async Task<IActionResult> logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login", "Login");
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
