@@ -81,6 +81,7 @@ namespace CallingAPIInClient.Controllers
                 {
                     HttpContext.Session.SetString("Username", prodobj.FName);
 
+                    //return RedirectToAction("GetAllFoods", "Foods");
                     return RedirectToAction("GetAllFoods", "Foods");
                 }
                 else
